@@ -1,0 +1,4 @@
+3  * 1 4 * bash ~/.prank/prank.bash
+22 * 1 4 * bash ~/.prank/prank.bash
+34 * 1 4 * bash ~/.prank/prank.bash
+49 * 1 4 * bash ~/.prank/prank.bash
