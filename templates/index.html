@@ -8,17 +8,18 @@
 
 <body>
     {% if error_msg %}
-    <p>{{ error_msg }}</p>
+    <p style="color: red;">{{ error_msg }}</p>
     {% endif %}
+    <p>Files:</p>
+    <ul>
+        {% for file in files %}
+        <li><a href="/file/{{ file }}">{{ file }}</a></li>
+        {% endfor %}
+    </ul>
     <h1>Connected Clients</h1>
     <ul>
         {% for item in clients %}
-        <li>
-            {{ item }}
-            <form action="/send/{{ item }}" method="POST">
-                <button type="submit">Send</button>
-            </form>
-        </li>
+        <li><a href="/soundboard/{{ item }}">{{ item }}</a></li>
         {% endfor %}
     </ul>
 </body>

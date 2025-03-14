@@ -1,2 +1,5 @@
 __pycache__
 *.pyc
+
+server_files/*
+client_files/*

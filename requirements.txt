@@ -1,3 +1,4 @@
 sanic
 sanic_ext
 websockets==14.1
+requests

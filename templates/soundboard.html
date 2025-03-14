@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Connected Clients</title>
+</head>
+
+<body>
+    {% if error_msg %}
+    <p style="color: red;">{{ error_msg }}</p>
+    {% endif %}
+
+    <p>Soundboard for {{ client_name }}</p>
+    <form method="post" action="/soundboard/{{ client_name }}/restart">
+        <input type="submit" value="Restart">
+    </form>
+    <ul>
+        {% for file in files %}
+        <li style="list-style: none; padding: 10px;">
+            <form method="post" action="/soundboard/{{ client_name }}">
+                <input type="hidden" name="file" value="{{ file }}">
+                <input type="submit" value="Play">{{ file }}
+            </form>
+
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
