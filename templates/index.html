@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Connected Clients</title>
+</head>
+
+<body>
+    {% if error_msg %}
+    <p>{{ error_msg }}</p>
+    {% endif %}
+    <h1>Connected Clients</h1>
+    <ul>
+        {% for item in clients %}
+        <li>
+            {{ item }}
+            <form action="/send/{{ item }}" method="POST">
+                <button type="submit">Send</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
