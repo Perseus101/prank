@@ -2,9 +2,9 @@ from sanic import Sanic, Request, Websocket
 from sanic.response import text, redirect, file
 from sanic_ext import render
 import json
-import asyncio
 import glob
 import os
+import uuid
 
 app = Sanic("App")
 
@@ -22,7 +22,7 @@ async def setup(app, loop):
 
 
 @app.get("/")
-async def index(request):
+async def index(request: Request):
     error_msg = request.args.get("error_msg", None)
     return await render(
         "index.html",
@@ -36,7 +36,7 @@ async def index(request):
 
 
 @app.get("/soundboard/<client_name:str>")
-async def soundboard(request, client_name):
+async def soundboard(request: Request, client_name: str):
     if client_name not in app.ctx.clients:
         return redirect("/?error_msg=Client+not+found")
     error_msg = request.args.get("error_msg", None)
@@ -52,7 +52,7 @@ async def soundboard(request, client_name):
 
 
 @app.post("/soundboard/<client_name:str>")
-async def play_sound(request, client_name):
+async def play_sound(request: Request, client_name: str):
     if client_name not in app.ctx.clients:
         return redirect("/?error_msg=Client+not+found")
     file = request.form.get("file")
@@ -64,7 +64,7 @@ async def play_sound(request, client_name):
 
 
 @app.post("/soundboard/<client_name:str>/restart")
-async def restart_client(request: Request, client_name):
+async def restart_client(request: Request, client_name: str):
     ws = app.ctx.clients.get(client_name)
     if ws is None:
         return redirect("/?error_msg=Client+not+found")
@@ -73,15 +73,30 @@ async def restart_client(request: Request, client_name):
 
 
 @app.get("/file/<filename:str>")
-async def get_file(request, filename):
+async def get_file(request: Request, filename: str):
     full_path = f"server_files/{filename}"
     if not os.path.exists(full_path):
         return text("File not found", status=404)
     return await file(full_path, filename=filename)
 
 
+@app.get("/client/client.py")
+async def get_client(request: Request):
+    client_name = request.args.get("client_name", None)
+    if client_name is None:
+        # Generate random uuid
+        client_name = str(uuid.uuid4())
+    server_url = request.host
+
+    return await render(
+        "client.py.template",
+        context={"client_name": client_name, "server_url": server_url},
+        status=200,
+    )
+
+
 @app.post("/send/<client_id:str>")
-async def send_message(request: Request, client_id):
+async def send_message(request: Request, client_id: str):
     print("Sending message to client", client_id)
     ws = app.ctx.clients.get(client_id)
     if ws is None:
