@@ -20,7 +20,7 @@ async def load_files(file_list):
         if server_file in files:
             continue
         # Download file from server
-        response = requests.get(f"http://{SERVER_URL}/file/{server_file}")
+        response = requests.get(f"https://{SERVER_URL}/file/{server_file}")
         if response.status_code != 200:
             print(f"Failed to download file: {server_file}")
             continue
