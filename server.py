@@ -91,6 +91,10 @@ async def get_client(request: Request):
     return await render(
         "client.py.template",
         context={"client_name": client_name, "server_url": server_url},
+        headers={
+            "Content-Type": "text/plain",
+            "Content-Disposition": "attachment; filename=client.py",
+        },
         status=200,
     )
 
